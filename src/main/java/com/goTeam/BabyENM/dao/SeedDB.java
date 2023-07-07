@@ -14,11 +14,15 @@ public class SeedDB {
 
     @PostConstruct
     public void init() {
-        repoOrCrud.saveWithChecks(new Node("Name1", "Ip1", " ", 0, 0));
-        repoOrCrud.saveWithChecks(new Node("Name2", "Ip2", " ", 0, 0));
-        repoOrCrud.saveWithChecks(new Node("Name3", "Ip1", " ", 0, 0));
-        repoOrCrud.saveWithChecks(new Node("Name2", "Ip3", " ", 0, 0));
-        repoOrCrud.saveWithChecks(new Node("Name1", "Ip2", " ", 0, 0));
+        repoOrCrud.saveWithChecks(new Node("X1", "12.10.10.25", "Dublin", 0, 0));
+        repoOrCrud.saveWithChecks(new Node("X2", "12.10.10.25", "Dublin", 0, 0));
+        repoOrCrud.saveWithChecks(new Node("L1", "12.10.10.25", "Killdare", 0, 0));
+        repoOrCrud.saveWithChecks(new Node("L2", "12.10.10.25", "Killdare", 0, 0));
+        repoOrCrud.saveWithChecks(new Node("X1", "23.40.40.200", "Athlone", 0, 0));
+        repoOrCrud.saveWithChecks(new Node("X2", "23.40.40.200", "Athlone", 0, 0));
+        repoOrCrud.saveWithChecks(new Node("Marco", "12.34.56.78", "Cork", 0, 0));
+        repoOrCrud.saveWithChecks(new Node("Polo", "87.65.43.21", "FootMoris", 0, 0));
+        repoOrCrud.saveWithChecks(new Node("Ray", "123.123.123.123", "Cavan", 0, 0));
 
     }
 

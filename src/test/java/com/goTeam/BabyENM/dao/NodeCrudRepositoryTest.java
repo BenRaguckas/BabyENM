@@ -14,9 +14,17 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class NodeCrudRepositoryTest {
+    private static final String API = "/api";
+    static long id;
+
+    private String tempHolder = "WTF?";
 
     @Autowired
     private TestRestTemplate restTemplate;
