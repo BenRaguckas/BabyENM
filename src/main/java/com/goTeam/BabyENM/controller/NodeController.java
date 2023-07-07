@@ -75,7 +75,7 @@ public class NodeController {
 
     @PostMapping("/node")
     public ResponseEntity<Node> createNode(@RequestBody Node node) {
-        node = repository.save(node);
+        node = repository.saveWithChecks(node);
         URI uri = URI.create("/node/" + node.getId());
         return ResponseEntity
                 .created(uri)
