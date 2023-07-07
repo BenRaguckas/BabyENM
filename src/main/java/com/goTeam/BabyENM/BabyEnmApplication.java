@@ -8,6 +8,8 @@ public class BabyEnmApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BabyEnmApplication.class, args);
+		System.out.println("Hello Wold");
 	}
+
 
 }
