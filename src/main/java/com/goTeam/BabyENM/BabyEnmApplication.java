@@ -18,6 +18,7 @@ public class BabyEnmApplication {
 
 
 		crud.save(new Node("TestName", "TestIP", "TestLocation", 1, 2));
+		//System.out.println(crud.saveWithChecks(new Node("TestName", "TestIP", "TestLocation", 1, 2)));
 
 		crud.findAll().forEach(System.out::println);
 	}
