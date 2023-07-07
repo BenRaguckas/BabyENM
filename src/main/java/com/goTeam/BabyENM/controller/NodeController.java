@@ -8,8 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.Collection;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api")
@@ -20,10 +19,22 @@ public class NodeController {
     private NodeCrudRepository repository;
 
     @GetMapping("/node")
-    public ResponseEntity<Collection<Node>> getNodes() {
+    public ResponseEntity<Collection<Node>> getNodes(
+            @RequestParam(value = "ip", required = false) String ip,
+            @RequestParam(value = "name", required = false) String name
+    ) { Collection<Node> nodes;
+        if (ip != null && name != null)
+            nodes = Collections.singletonList(repository.findByIpName(ip, name));
+        else if (ip != null)
+            nodes = repository.findByIp(ip);
+        else if (name != null)
+            nodes = repository.findByName(name);
+        else
+            nodes = Streamable.of(repository.findAll()).toList();
+
         return ResponseEntity
                 .ok()
-                .body(Streamable.of(repository.findAll()).toList());
+                .body(nodes);
     }
 
     @GetMapping("/node/{id}")
