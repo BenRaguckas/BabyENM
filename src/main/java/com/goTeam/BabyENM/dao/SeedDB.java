@@ -10,15 +10,15 @@ import org.springframework.stereotype.Component;
 public class SeedDB {
 
     @Autowired
-    NodeCrudRepository NRC;
+    NodeCrudRepository repoOrCrud;
 
     @PostConstruct
     public void init() {
-        NRC.saveWithChecks(new Node("Name1", "Ip1", " ", 0, 0));
-        NRC.saveWithChecks(new Node("Name2", "Ip2", " ", 0, 0));
-        NRC.saveWithChecks(new Node("Name3", "Ip1", " ", 0, 0));
-        NRC.saveWithChecks(new Node("Name2", "Ip3", " ", 0, 0));
-        NRC.saveWithChecks(new Node("Name1", "Ip2", " ", 0, 0));
+        repoOrCrud.saveWithChecks(new Node("Name1", "Ip1", " ", 0, 0));
+        repoOrCrud.saveWithChecks(new Node("Name2", "Ip2", " ", 0, 0));
+        repoOrCrud.saveWithChecks(new Node("Name3", "Ip1", " ", 0, 0));
+        repoOrCrud.saveWithChecks(new Node("Name2", "Ip3", " ", 0, 0));
+        repoOrCrud.saveWithChecks(new Node("Name1", "Ip2", " ", 0, 0));
 
     }
 
