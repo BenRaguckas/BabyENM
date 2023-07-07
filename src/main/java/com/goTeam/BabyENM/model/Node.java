@@ -10,24 +10,40 @@ public class Node {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
+    private String ip;
     private String location;
     private float longitude, latitude;
 
+
     public Node() {}
 
-    public Node(int id, String name, String location, float longitude, float latitude) {
+    public Node(int id, String name, String ip, String location, float longitude, float latitude) {
         this.id = id;
         this.name = name;
+        this.ip = ip;
         this.location = location;
         this.longitude = longitude;
         this.latitude = latitude;
     }
 
-    public Node(String name, String location, float longitude, float latitude) {
+    public Node(String name, String ip, String location, float longitude, float latitude) {
         this.name = name;
+        this.ip = ip;
         this.location = location;
         this.longitude = longitude;
         this.latitude = latitude;
+    }
+
+    @Override
+    public String toString() {
+        return "Node{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", ip='" + ip + '\'' +
+                ", location='" + location + '\'' +
+                ", longitude=" + longitude +
+                ", latitude=" + latitude +
+                '}';
     }
 
     public int getId() {
@@ -44,6 +60,14 @@ public class Node {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 
     public String getLocation() {
