@@ -1,7 +1,6 @@
 package com.goTeam.BabyENM.dao;
 
 import com.goTeam.BabyENM.model.Node;
-import org.apache.coyote.Response;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -21,10 +20,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class NodeCrudRepositoryTest {
-    private static final String API = "/api";
+    private static final String API = "/api/node";
     static long id;
-
-    private String tempHolder = "WTF?";
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -34,7 +31,7 @@ class NodeCrudRepositoryTest {
     public void testPostNode(){
         Node node = new Node("Name1", "1.20.20.60", "Dublin", 0, 0);
 
-        ResponseEntity<Node> nodeResponseEntity = restTemplate.postForEntity(API + "/node", node, Node.class);
+        ResponseEntity<Node> nodeResponseEntity = restTemplate.postForEntity(API , node, Node.class);
         Node responseBody = nodeResponseEntity.getBody();
         id = responseBody.getId();
 
@@ -53,7 +50,7 @@ class NodeCrudRepositoryTest {
     @Order(2)
     public void testGetAll() {
         ResponseEntity<List<Node>> responseEntity = restTemplate.exchange(
-                API + "/node", HttpMethod.GET, null, new ParameterizedTypeReference<List<Node>>() {} );
+                API, HttpMethod.GET, null, new ParameterizedTypeReference<List<Node>>() {} );
         List<Node> nodes = responseEntity.getBody();
 //        Test response
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
@@ -67,7 +64,7 @@ class NodeCrudRepositoryTest {
     public void testGetByIp() {
         String tempIp = "12.10.10.25";
         ResponseEntity<List<Node>> responseEntity = restTemplate.exchange(
-                API + "/node?ip=" + tempIp, HttpMethod.GET, null, new ParameterizedTypeReference<List<Node>>() {});
+                API + "?ip=" + tempIp, HttpMethod.GET, null, new ParameterizedTypeReference<List<Node>>() {});
         List<Node> nodes = responseEntity.getBody();
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertNotNull(nodes);
@@ -82,7 +79,7 @@ class NodeCrudRepositoryTest {
     public void testGetByName(){
         String tempName = "X1";
         ResponseEntity<List<Node>> responseEntity = restTemplate.exchange(
-                API + "/node?name=" + tempName, HttpMethod.GET, null, new ParameterizedTypeReference<List<Node>>() {});
+                API + "?name=" + tempName, HttpMethod.GET, null, new ParameterizedTypeReference<List<Node>>() {});
         List<Node> nodes = responseEntity.getBody();
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertNotNull(nodes);
@@ -98,7 +95,7 @@ class NodeCrudRepositoryTest {
         String tempIp = "12.10.10.25";
         String tempName = "X1";
         ResponseEntity<List<Node>> responseEntity = restTemplate.exchange(
-                API + "/node?name=" + tempName + "&ip=" + tempIp, HttpMethod.GET, null, new ParameterizedTypeReference<List<Node>>() {});
+                API + "?name=" + tempName + "&ip=" + tempIp, HttpMethod.GET, null, new ParameterizedTypeReference<List<Node>>() {});
         List<Node> nodes = responseEntity.getBody();
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertNotNull(nodes);
@@ -120,7 +117,7 @@ class NodeCrudRepositoryTest {
     public void testGetById() {
         long id = 1;
         ResponseEntity<Node> responseEntity = restTemplate.exchange(
-                API + "/node/" + id, HttpMethod.GET, null, new ParameterizedTypeReference<Node>() {});
+                API + "/" + id, HttpMethod.GET, null, new ParameterizedTypeReference<Node>() {});
         Node n = responseEntity.getBody();
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertNotNull(n);
@@ -136,10 +133,11 @@ class NodeCrudRepositoryTest {
     @Test
     @Order(7)
     public void testPut() {
-        Node editedNode = new Node("Node009", "1.20.20.80", "Dublin", 0, 0);
-        restTemplate.put(API + "/node/" + id, editedNode);
 
-        Node responseNode = restTemplate.getForObject(API + "/node/" + id, Node.class );
+        Node editedNode = new Node("Node009", "1.20.20.80", "Dublin", 0, 0);
+        restTemplate.put(API + "/" + id, editedNode);
+
+        Node responseNode = restTemplate.getForObject(API + "/" + id, Node.class );
 
         assertEquals(id, responseNode.getId());
         assertEquals("Node009", responseNode.getName());
@@ -152,10 +150,10 @@ class NodeCrudRepositoryTest {
     @Test
     @Order(8)
     public void deleteById () {
-        restTemplate.delete(API + "/node/" + id);
+        restTemplate.delete(API + "/" + id);
 
         ResponseEntity<List<Node>> responseEntity = restTemplate.exchange(
-                API + "/node", HttpMethod.GET, null, new ParameterizedTypeReference<List<Node>>() {} );
+                API , HttpMethod.GET, null, new ParameterizedTypeReference<List<Node>>() {} );
         List<Node> nodes = responseEntity.getBody();
 
         List<Node> responseBody = responseEntity.getBody();
@@ -166,10 +164,10 @@ class NodeCrudRepositoryTest {
     @Test
     @Order(9)
     public void deleteAll () {
-        restTemplate.delete(API + "/node");
+        restTemplate.delete(API );
 
         ResponseEntity<List<Node>> responseEntity = restTemplate.exchange(
-                API + "/node", HttpMethod.GET, null, new ParameterizedTypeReference<List<Node>>() {} );
+                API, HttpMethod.GET, null, new ParameterizedTypeReference<List<Node>>() {} );
         List<Node> nodes = responseEntity.getBody();
 
         List<Node> responseBody = responseEntity.getBody();
