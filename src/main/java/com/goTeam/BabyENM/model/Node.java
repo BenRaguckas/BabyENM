@@ -46,6 +46,10 @@ public class Node {
                 '}';
     }
 
+    public String getIdentifier() {
+        return ip + '-' + name;
+    }
+
     public int getId() {
         return id;
     }

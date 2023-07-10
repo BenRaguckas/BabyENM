@@ -2,6 +2,8 @@ package com.goTeam.BabyENM.controller;
 
 import com.goTeam.BabyENM.dao.NodeCrudRepository;
 import com.goTeam.BabyENM.model.Node;
+import com.goTeam.BabyENM.model.NodeThread;
+import com.goTeam.BabyENM.service.NodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,9 @@ public class NodeController {
 
     @Autowired
     private NodeCrudRepository repository;
+
+    @Autowired
+    private NodeService nodeService;
 
     @GetMapping("/node")
     public ResponseEntity<Collection<Node>> getNodes(
@@ -53,9 +58,34 @@ public class NodeController {
         }
     }
 
+    @GetMapping("/node/{id}/log")
+    public ResponseEntity<List<String>> getNodeByIdLogs(@PathVariable long id) {
+        Optional<Node> optionalNode = repository.findById(id);
+        if (optionalNode.isPresent()) {
+            NodeThread thread = nodeService.getNodeThread(optionalNode.get());
+            return ResponseEntity.ok().body(thread.getMemory());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+    @GetMapping("/node/{id}/cache")
+    public ResponseEntity<List<String>> getNodeByIdCache(@PathVariable long id) {
+        Optional<Node> optionalNode = repository.findById(id);
+        if (optionalNode.isPresent()) {
+            NodeThread thread = nodeService.getNodeThread(optionalNode.get());
+            return ResponseEntity.ok().body(thread.getCache());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @DeleteMapping("/node/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable long id) {
         if (repository.existsById(id)) {
+            //Service
+            nodeService.getNodeThread(repository.findById(id).get()).Shutdown();
             repository.deleteById(id);
             return ResponseEntity
                     .ok()
@@ -69,6 +99,8 @@ public class NodeController {
 
     @DeleteMapping("/node")
     public ResponseEntity<Void> deleteAllNodes() {
+        //Service
+        repository.findAll().forEach(node -> nodeService.getNodeThread(node).Shutdown());
         repository.deleteAll();
         return ResponseEntity.ok().build();
     }
@@ -76,6 +108,8 @@ public class NodeController {
     @PostMapping("/node")
     public ResponseEntity<Node> createNode(@RequestBody Node node) {
         node = repository.saveWithChecks(node);
+        //Service
+        nodeService.getNodeThread(node);
         URI uri = URI.create("/node/" + node.getId());
         return ResponseEntity
                 .created(uri)
